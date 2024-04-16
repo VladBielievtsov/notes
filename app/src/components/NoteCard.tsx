@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 
-export default function NoteCard({ id, color, content, createdAt }: INote) {
+export default function NoteCard({ color, content, createdAt }: INote) {
   const [maxHeight, setMaxHeight] = useState<number | undefined>(undefined);
   const card = useRef<HTMLDivElement>(null);
 

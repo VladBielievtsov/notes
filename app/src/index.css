@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --lavender: #e2e7f2;
+    --yellow: #ffc872;
+    --orange: #ff9b73;
+    --purple: #b692fe;
+    --blue: #01d4ff;
+    --khaki: #e4ee92; 
+  }
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+
+  .shakeAnimation {
+    animation: shake 0.5s infinite alternate;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+}

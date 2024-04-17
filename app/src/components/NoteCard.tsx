@@ -1,6 +1,10 @@
 import { Pencil, Plus, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { INote, removeNote, updateNote } from "../lib/features/notesSlice";
+import {
+  INote,
+  removeNote,
+  updateNote,
+} from "../lib/features/notes/notesSlice";
 import { useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";

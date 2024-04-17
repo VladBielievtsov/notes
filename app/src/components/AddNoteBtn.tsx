@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { changeIsFormOpen, selectColor } from "../lib/features/notesSlice";
+import {
+  changeIsFormOpen,
+  selectColor,
+} from "../lib/features/notes/notesSlice";
 import { RootState } from "../lib/store";
 
 export const COLORS = ["yellow", "orange", "purple", "blue", "khaki"];

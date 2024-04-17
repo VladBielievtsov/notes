@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { RootState } from "../lib/store";
-import { addNote, changeIsFormOpen } from "../lib/features/notesSlice";
+import { addNote, changeIsFormOpen } from "../lib/features/notes/notesSlice";
 import { v4 as uuidv4 } from "uuid";
 
 export default function AddNoteForm() {

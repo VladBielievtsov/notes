@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "../lib/hooks";
 import { logout } from "../lib/features/auth/authActions";
-import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 interface AvatarProps {

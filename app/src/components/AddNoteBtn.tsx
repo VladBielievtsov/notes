@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { changeIsFormOpen, selectColor } from "../lib/features/notesSlice";
 import { RootState } from "../lib/store";
 
+export const COLORS = ["yellow", "orange", "purple", "blue", "khaki"];
+
 export default function AddNoteBtn() {
   const [clicked, setClicked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -20,8 +22,6 @@ export default function AddNoteBtn() {
       setClicked(false);
     }, 230);
   };
-
-  const colors = ["yellow", "orange", "purple", "blue", "khaki"];
 
   const handleColor = (color: string) => {
     dispatch(selectColor(color));
@@ -52,9 +52,9 @@ export default function AddNoteBtn() {
       </motion.button>
       <div
         className={`absolute top-3 block w-[20px] overflow-hidden`}
-        style={{ height: colors.length * 70 + "px" }}
+        style={{ height: COLORS.length * 70 + "px" }}
       >
-        {colors.map((color, id) => (
+        {COLORS.map((color, id) => (
           <motion.button
             key={id}
             animate={{ y: open ? 50 * id + 50 : 0 }}

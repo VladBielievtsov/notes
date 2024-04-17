@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import { useAppDispatch } from "../lib/hooks";
+import { COLORS } from "./AddNoteBtn";
 
 export default function NoteCard({ id, color, content, createdAt }: INote) {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [maxHeight, setMaxHeight] = useState<number | undefined>(undefined);
   const [updatedContent, setUpdatedContent] = useState<string>(content);
+  const [updatedColor, setUpdatedColor] = useState<string>(color);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const card = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ export default function NoteCard({ id, color, content, createdAt }: INote) {
       updateNote({
         id,
         content: updatedContent,
-        color,
+        color: updatedColor,
         createdAt: formattedDate,
       })
     );
@@ -64,13 +66,13 @@ export default function NoteCard({ id, color, content, createdAt }: INote) {
           <X />
         </button>
       )}
-      <div
-        ref={card}
-        className={`w-full min-w-[288px] aspect-square overflow-hidden relative rounded-xl py-6 px-3`}
-        style={{ backgroundColor: `var(--${color})` }}
-      >
+      <>
         {!editMode ? (
-          <>
+          <div
+            ref={card}
+            className={`w-full min-w-[288px] aspect-square overflow-hidden relative rounded-xl py-6 px-3`}
+            style={{ backgroundColor: `var(--${color})` }}
+          >
             <div className="text-lg pb-[52px]">
               <SimpleBar style={{ maxHeight: maxHeight }}>
                 <p className="px-3">{content}</p>
@@ -90,36 +92,57 @@ export default function NoteCard({ id, color, content, createdAt }: INote) {
                 <Pencil className="mx-auto w-5" />
               </motion.button>
             </div>
-          </>
+          </div>
         ) : (
           <>
-            <div className="text-lg px-3 h-full pb-[52px]">
-              <textarea
-                autoFocus
-                className="text-lg text-black bg-transparent w-full h-full outline-0 resize-none"
-                value={updatedContent}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setUpdatedContent(e.target.value)
-                }
-              ></textarea>
-            </div>
             <div
-              className="flex items-center justify-between absolute bottom-0 right-0 left-0 p-4"
-              style={{ backgroundColor: `var(--${color})` }}
+              style={{
+                backgroundColor: `var(--${updatedColor})`,
+              }}
+              className={`bg-${updatedColor ?? "orange"} ${
+                isEmpty && "shakeAnimation"
+              } form w-full min-w-[288px] aspect-square rounded-xl p-6 flex flex-col overflow-hidden relative transition duration-50`}
             >
-              <div>{createdAt}</div>
-              <motion.button
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.8 }}
-                className="w-[44px] h-[44px] leading-[44px] bg-black text-white rounded-full"
-                onClick={handleUpdate}
+              <div className="text-lg h-full pb-[52px]">
+                <textarea
+                  autoFocus
+                  className="text-lg text-black bg-transparent w-full h-full outline-0 resize-none"
+                  value={updatedContent}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setUpdatedContent(e.target.value)
+                  }
+                ></textarea>
+              </div>
+              <div
+                className="flex items-center justify-between absolute bottom-0 right-0 left-0 p-4 transition duration-50"
+                style={{ backgroundColor: `var(--${updatedColor})` }}
               >
-                <Plus className="mx-auto w-5" />
-              </motion.button>
+                <div>{createdAt}</div>
+                <motion.button
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.8 }}
+                  className="w-[44px] h-[44px] leading-[44px] bg-black text-white rounded-full"
+                  onClick={handleUpdate}
+                >
+                  <Plus className="mx-auto w-5" />
+                </motion.button>
+              </div>
+            </div>
+            <div className={`absolute flex -bottom-5 h-[20px] w-full`}>
+              {COLORS.map((color, id) => (
+                <motion.button
+                  key={id}
+                  animate={{ y: 10, opacity: 1 }}
+                  transition={{ ease: "linear", delay: id * 0.1 }}
+                  className={`w-[20px] h-[20px] opacity-0 rounded-full mx-auto block transition`}
+                  style={{ backgroundColor: `var(--${color})` }}
+                  onClick={() => setUpdatedColor(color)}
+                ></motion.button>
+              ))}
             </div>
           </>
         )}
-      </div>
+      </>
     </div>
   );
 }

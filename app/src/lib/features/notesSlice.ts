@@ -55,8 +55,21 @@ const notesSlice = createSlice({
       state.color = null;
       state.isFormOpen = false;
     },
+    removeNote: (state, { payload }) => {
+      state.list = state.list.filter((item) => item.id !== payload);
+    },
+    updateNote: (state, { payload }) => {
+      const findNote = state.list.findIndex((n) => n.id === payload.id);
+      state.list[findNote] = payload;
+    },
   },
 });
 
 export default notesSlice.reducer;
-export const { selectColor, changeIsFormOpen, addNote } = notesSlice.actions;
+export const {
+  selectColor,
+  changeIsFormOpen,
+  addNote,
+  removeNote,
+  updateNote,
+} = notesSlice.actions;

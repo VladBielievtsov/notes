@@ -92,28 +92,29 @@ func GoogleCallBack(c *fiber.Ctx) error {
 
 func generateJWTToken(userID *uuid.UUID) (string, error) {
 	tokenByte := jwt.New(jwt.SigningMethodHS256)
-	now := time.Now().UTC()
 	claims := tokenByte.Claims.(jwt.MapClaims)
 
 	claims["sub"] = userID
-	claims["exp"] = now.Add(1440 * time.Minute).Unix()
-	claims["iat"] = now.Unix()
-	claims["nbf"] = now.Unix()
+	claims["exp"] = time.Now().Add(1440 * time.Minute).Unix()
+	claims["iat"] = time.Now().Unix()
+	claims["nbf"] = time.Now().Unix()
 
 	return tokenByte.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
 func Logout(c *fiber.Ctx) error {
+	token := c.Cookies("token")
+
+	if token != "" {
+		c.Cookie(&fiber.Cookie{
+			Name:    "token",
+			Value:   "",
+			Expires: time.Now().Add(-time.Hour),
+		})
+	}
+
 	c.Locals("userID", nil)
-	// expired := time.Now().Add(-time.Hour * 24)
-	c.Cookie(&fiber.Cookie{
-		Name:     "token",
-		Value:    "",
-		Expires:  time.Unix(0, 0), // Set expiration time to Unix epoch (January 1, 1970)
-		HTTPOnly: true,            // Ensure the cookie is accessible only via HTTP(S)
-		Secure:   true,            // Require the cookie to be sent over HTTPS
-		SameSite: "Strict",        // Enforce strict SameSite policy
-	})
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success"})
 }
 

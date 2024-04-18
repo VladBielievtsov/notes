@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { logout, user } from "./authActions";
-import Cookies from "js-cookie";
 
 export interface UserInfo {
   id: number;
@@ -43,7 +42,6 @@ const authSlice = createSlice({
     //Logout
     builder.addCase(logout.fulfilled, (state) => {
       state.userInfo = null;
-      Cookies.remove("token");
       state.status = "idle";
     });
   },

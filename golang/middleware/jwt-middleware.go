@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
@@ -18,14 +20,18 @@ func JWTMiddleware(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
 	}
 
-	if claims.Valid() != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Token expired"})
+	if exp, ok := claims["exp"].(float64); ok {
+		if int64(exp) < time.Now().Unix() {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Token expired"})
+		}
+	} else {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid token format"})
 	}
 
 	userID := claims["sub"].(string)
+	fmt.Println(claims["exp"])
 
 	c.Locals("userID", userID)
 
 	return c.Next()
-
 }

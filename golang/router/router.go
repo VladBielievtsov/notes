@@ -13,7 +13,7 @@ func Routes(micro *fiber.App) {
 		router.Get("/google", handlers.Google)
 		router.Get("/google/callback", handlers.GoogleCallBack)
 
-		router.Post("/logout", handlers.Logout)
+		router.Get("/logout", handlers.Logout)
 	})
 
 	micro.Get("/user", middleware.JWTMiddleware, handlers.GetMe)

@@ -17,4 +17,11 @@ func Routes(micro *fiber.App) {
 	})
 
 	micro.Get("/user", middleware.JWTMiddleware, handlers.GetMe)
+
+	micro.Route("/notes", func(router fiber.Router) {
+		router.Post("/", middleware.JWTMiddleware, handlers.Store)
+		router.Get("/", middleware.JWTMiddleware, handlers.AllNotes)
+		router.Delete("/:id", middleware.JWTMiddleware, handlers.RemoveNote)
+		router.Put("/:id", middleware.JWTMiddleware, handlers.UpdateNote)
+	})
 }

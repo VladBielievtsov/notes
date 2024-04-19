@@ -17,8 +17,9 @@ export default function Avatar({ img, size, name, status }: AvatarProps) {
   const navigate = useNavigate();
 
   const handlerLogout = () => {
-    dispatch(logout());
-    navigate("/login");
+    dispatch(logout()).then(() => {
+      navigate("/login");
+    });
   };
 
   return (

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { RootState } from "../lib/store";
-import { addNote, changeIsFormOpen } from "../lib/features/notes/notesSlice";
-import { v4 as uuidv4 } from "uuid";
+import { changeIsFormOpen } from "../lib/features/notes/notesSlice";
+import { storeNote } from "../lib/features/notes/notesActions";
 
 export default function AddNoteForm() {
   const [content, setContent] = useState<string>("");
@@ -21,19 +21,11 @@ export default function AddNoteForm() {
       setIsEmpty(true);
       return;
     }
-    const date = new Date();
-    const formattedDate = date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    });
 
     dispatch(
-      addNote({
-        id: uuidv4(),
+      storeNote({
         content,
-        color,
-        createdAt: formattedDate,
+        color: color || "orange",
       })
     );
   };

@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -17,7 +16,7 @@ func JWTMiddleware(c *fiber.Ctx) error {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized", "error": err.Error(), "token": token})
 	}
 
 	if exp, ok := claims["exp"].(float64); ok {
@@ -29,7 +28,6 @@ func JWTMiddleware(c *fiber.Ctx) error {
 	}
 
 	userID := claims["sub"].(string)
-	fmt.Println(claims["exp"])
 
 	c.Locals("userID", userID)
 

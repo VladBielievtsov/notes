@@ -1,7 +1,20 @@
 import { motion } from "framer-motion";
 import googleLogo from "../assets/google.svg";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../lib/hooks";
+import { RootState } from "../lib/store";
 
 export default function Login() {
+  const { userInfo, status } = useAppSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (status === "succeeded") {
+      if (userInfo !== null) navigate("/");
+    }
+  }, [userInfo, status]);
+
   const handleClick = async () => {
     window.location.href = "http://localhost:8080/api/auth/google";
   };

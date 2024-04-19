@@ -31,7 +31,7 @@ func ConnetcDB() error {
 
 	DB.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 
-	err = DB.AutoMigrate(&models.User{})
+	err = DB.AutoMigrate(&models.User{}, &models.Note{})
 	if err != nil {
 		log.Fatal("Migration Failed:  \n", err.Error())
 		os.Exit(1)

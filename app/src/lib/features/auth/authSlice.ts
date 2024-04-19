@@ -6,7 +6,6 @@ export interface UserInfo {
   email: string;
   fullname: string;
   picture: string;
-  googleID: string;
   createdAt: string;
 }
 

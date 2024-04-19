@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { editNote, getNotes, removeNote, storeNote } from "./notesActions";
 
 export interface INote {
   id: string;
@@ -9,33 +10,16 @@ export interface INote {
 
 interface NotesState {
   list: INote[];
+  error: string | null | undefined;
+  status: "idle" | "loading" | "succeeded" | "failed";
   color: null | string;
   isFormOpen: boolean;
 }
 
 const initialState: NotesState = {
-  list: [
-    {
-      id: "0",
-      content:
-        "The passage is attributed to an unknown typesetter in the 15th century",
-      color: "yellow",
-      createdAt: "Apr 16, 2024",
-    },
-    {
-      id: "1",
-      content: "The passage experienced a surge in popularity during the 1960s",
-      color: "orange",
-      createdAt: "Apr 16, 2024",
-    },
-    {
-      id: "2",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      color: "blue",
-      createdAt: "Apr 16, 2024",
-    },
-  ],
+  list: [],
+  status: "idle",
+  error: null,
   color: null,
   isFormOpen: false,
 };
@@ -50,26 +34,64 @@ const notesSlice = createSlice({
     changeIsFormOpen: (state, { payload }) => {
       state.isFormOpen = payload;
     },
-    addNote: (state, { payload }) => {
-      state.list = [payload, ...(state.list || [])];
+  },
+  extraReducers(builder) {
+    // Store
+    builder.addCase(storeNote.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(storeNote.fulfilled, (state, { payload }) => {
       state.color = null;
       state.isFormOpen = false;
-    },
-    removeNote: (state, { payload }) => {
-      state.list = state.list.filter((item) => item.id !== payload);
-    },
-    updateNote: (state, { payload }) => {
-      const findNote = state.list.findIndex((n) => n.id === payload.id);
-      state.list[findNote] = payload;
-    },
+      state.list = [payload.data.note, ...state.list];
+    });
+    builder.addCase(storeNote.rejected, (state, { payload }) => {
+      state.error = payload?.message;
+    });
+    // Get All
+    builder.addCase(getNotes.pending, (state) => {
+      state.status = "loading";
+      state.list = [];
+      state.error = null;
+    });
+    builder.addCase(getNotes.fulfilled, (state, { payload }) => {
+      state.status = "succeeded";
+      state.list = payload.data.notes;
+    });
+    builder.addCase(getNotes.rejected, (state, { payload }) => {
+      state.status = "failed";
+      state.error = payload?.message;
+    });
+    // Remove
+    builder.addCase(removeNote.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(removeNote.fulfilled, (state, { payload }) => {
+      state.status = "succeeded";
+      state.list =
+        state.list?.filter((note) => note.id !== payload.id) || state.list;
+    });
+    builder.addCase(removeNote.rejected, (state, { payload }) => {
+      state.status = "failed";
+      state.error = payload?.message;
+    });
+    // edit
+    builder.addCase(editNote.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(editNote.fulfilled, (state, { payload }) => {
+      const editedNote = payload.data.note;
+      const existingNoteIndex = state.list?.findIndex(
+        (note) => note.id === editedNote.id
+      );
+      state.list[existingNoteIndex] = editedNote;
+      state.status = "succeeded";
+    });
+    builder.addCase(editNote.rejected, (state, { payload }) => {
+      state.error = payload?.message;
+    });
   },
 });
 
 export default notesSlice.reducer;
-export const {
-  selectColor,
-  changeIsFormOpen,
-  addNote,
-  removeNote,
-  updateNote,
-} = notesSlice.actions;
+export const { selectColor, changeIsFormOpen } = notesSlice.actions;

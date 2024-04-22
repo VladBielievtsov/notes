@@ -110,6 +110,7 @@ func Logout(c *fiber.Ctx) error {
 			Name:    "token",
 			Value:   "",
 			Expires: time.Now().Add(-time.Hour),
+			Domain:  os.Getenv("APP_DOMAIN"),
 		})
 	}
 

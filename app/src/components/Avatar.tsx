@@ -18,7 +18,7 @@ export default function Avatar({ img, size, name, status }: AvatarProps) {
 
   const handlerLogout = () => {
     dispatch(logout()).then(() => {
-      navigate("/login");
+      navigate(`${import.meta.env.BASE_URL}/login`);
     });
   };
 

@@ -20,7 +20,7 @@ func Start() error {
 	// Start database
 	err = database.ConnetcDB()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	// defer Close database
@@ -34,7 +34,7 @@ func Start() error {
 	// attach middleware
 	// cors, etc...
 	micro.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173",
+		AllowOrigins:     os.Getenv("FRONTEND"),
 		AllowHeaders:     "Origin, Content-Type, Accept",
 		AllowMethods:     "GET, POST, PUT, DELETE",
 		AllowCredentials: true,

@@ -20,7 +20,7 @@ export const storeNote = createAsyncThunk<
   try {
     const { data } = await axios({
       method: "post",
-      url: "http://localhost:8080/api/notes",
+      url: `${import.meta.env.VITE_API}/api/notes`,
       headers: {},
       data: { content, color },
       withCredentials: true,

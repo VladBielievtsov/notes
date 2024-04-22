@@ -13,7 +13,7 @@ export const user = createAsyncThunk<
   { rejectValue: ErrorType }
 >("/auth/user", async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get("http://localhost:8080/api/user", {
+    const { data } = await axios.get(`${import.meta.env.VITE_API}/api/user`, {
       withCredentials: true,
     });
     return data;
@@ -34,9 +34,12 @@ export const logout = createAsyncThunk<
   { rejectValue: ErrorType }
 >("/auth/logout", async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get("http://localhost:8080/api/auth/logout", {
-      withCredentials: true,
-    });
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API}/api/auth/logout`,
+      {
+        withCredentials: true,
+      }
+    );
     return data;
   } catch (error) {
     const axiosError = error as AxiosError<ErrorType>;

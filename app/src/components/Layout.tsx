@@ -9,7 +9,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (status === "failed") {
-      if (userInfo === null) navigate("/login");
+      if (userInfo === null) navigate(`${import.meta.env.BASE_URL}/login`);
     }
   }, [userInfo, status]);
 

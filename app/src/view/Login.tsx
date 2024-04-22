@@ -11,12 +11,12 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "succeeded") {
-      if (userInfo !== null) navigate("/");
+      if (userInfo !== null) navigate(import.meta.env.BASE_URL);
     }
   }, [userInfo, status]);
 
   const handleClick = async () => {
-    window.location.href = "http://localhost:8080/api/auth/google";
+    window.location.href = `${import.meta.env.VITE_API}/api/auth/google`;
   };
 
   return (

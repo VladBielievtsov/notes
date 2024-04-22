@@ -16,9 +16,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path={import.meta.env.BASE_URL} element={<Home />} />
+        <Route path={"/"} element={<Home />} />
       </Route>
-      <Route path={`${import.meta.env.BASE_URL}/login`} element={<Login />} />
+      <Route path={`/login`} element={<Login />} />
     </Routes>
   );
 }

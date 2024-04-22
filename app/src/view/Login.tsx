@@ -11,7 +11,7 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "succeeded") {
-      if (userInfo !== null) navigate(import.meta.env.BASE_URL);
+      if (userInfo !== null) navigate("/");
     }
   }, [userInfo, status]);
 

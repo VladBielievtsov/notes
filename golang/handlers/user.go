@@ -107,10 +107,13 @@ func Logout(c *fiber.Ctx) error {
 
 	if token != "" {
 		c.Cookie(&fiber.Cookie{
-			Name:    "token",
-			Value:   "",
-			Expires: time.Now().Add(-time.Hour),
-			Domain:  os.Getenv("APP_DOMAIN"),
+			Name:     "token",
+			Value:    "",
+			Path:     "/",
+			Secure:   false,
+			HTTPOnly: true,
+			Expires:  time.Now().Add(-time.Hour),
+			Domain:   os.Getenv("APP_DOMAIN"),
 		})
 	}
 

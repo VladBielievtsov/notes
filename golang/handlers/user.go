@@ -87,7 +87,7 @@ func GoogleCallBack(c *fiber.Ctx) error {
 		Domain:   "localhost",
 	})
 
-	return c.Redirect("http://localhost:5173")
+	return c.Redirect(os.Getenv("FRONTEND"))
 }
 
 func generateJWTToken(userID *uuid.UUID) (string, error) {

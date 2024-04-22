@@ -43,7 +43,7 @@ export const getNotes = createAsyncThunk<
   { rejectValue: ErrorType }
 >("/note/getAll", async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get("http://localhost:8080/api/notes", {
+    const { data } = await axios.get(`${import.meta.env.VITE_API}/api/notes`, {
       withCredentials: true,
     });
     return data;
@@ -65,7 +65,7 @@ export const removeNote = createAsyncThunk<
 >("/note/remove", async (id, { rejectWithValue }) => {
   try {
     const { data } = await axios.delete(
-      `http://localhost:8080/api/notes/${id}`,
+      `${import.meta.env.VITE_API}/api/notes/${id}`,
       { withCredentials: true }
     );
     return data;
@@ -92,7 +92,7 @@ export const editNote = createAsyncThunk<
   try {
     const { data } = await axios({
       method: "put",
-      url: `http://localhost:8080/api/notes/${id}`,
+      url: `${import.meta.env.VITE_API}/api/notes/${id}`,
       withCredentials: true,
       headers: {},
       data: { color, content },

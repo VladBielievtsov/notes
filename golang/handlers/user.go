@@ -84,7 +84,7 @@ func GoogleCallBack(c *fiber.Ctx) error {
 		MaxAge:   1440 * 60,
 		Secure:   false,
 		HTTPOnly: true,
-		Domain:   "localhost",
+		Domain:   os.Getenv("APP_DOMAIN"),
 	})
 
 	return c.Redirect(os.Getenv("FRONTEND"))
